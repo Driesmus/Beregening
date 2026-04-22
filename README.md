@@ -1,13 +1,8 @@
 # 🌱 Slimme Beregening voor Home Assistant
 
-Een complete en flexibele **automatische beregeningsoplossing** voor Home Assistant, inclusief:
+Een complete en flexibele **automatische beregeningsoplossing** voor Home Assistant.
 
-* 💧 Automatische planning per zone
-* 🌦️ Weerafhankelijke logica (regen & temperatuur)
-* 🧠 Slimme beslissingen wanneer wel/niet sproeien
-* 📊 Dashboard met realtime voortgang
-* ⏱️ Visuele timerbalken per zone
-* 🎛️ Handmatige bediening per zone
+⚡ Ontworpen om volledig schaalbaar te zijn — van 1 tot 20+ zones zonder extra configuratie.
 
 ---
 
@@ -29,13 +24,16 @@ Een complete en flexibele **automatische beregeningsoplossing** voor Home Assist
 ---
 
 ### 💧 Zonebeheer
-- 🔄 **Onbeperkt aantal zones (volledig dynamisch)**
-- Voeg simpelweg zones toe in je configuratie — de rest wordt automatisch gegenereerd
-- Per zone:
-  - ⏱️ Eigen duur
-  - 📅 Eigen dagen (weekplanner)
-  - ▶️ Handmatige start
-  - 📊 Eigen timerbalk met realtime voortgang
+
+* 🔄 **Onbeperkt aantal zones (volledig dynamisch)**
+* Voeg simpelweg zones toe in je configuratie — de rest wordt automatisch gegenereerd
+
+Per zone:
+
+* ⏱️ Eigen duur
+* 📅 Eigen dagen (weekplanner)
+* ▶️ Handmatige start
+* 📊 Eigen timerbalk met realtime voortgang
 
 ---
 
@@ -47,14 +45,15 @@ Een complete en flexibele **automatische beregeningsoplossing** voor Home Assist
   * Totale geplande duur
   * Resterende tijd
   * Eindtijd
-* Per zone:
 
-  * Timerbalk (visueel)
-  * Realtime voortgang
-  * Automatisch kleurgebruik:
+Per zone:
 
-    * 🔴 Uit → verborgen tekst
-    * 🟢 Actief → fel groen
+* Timerbalk (visueel)
+* Realtime voortgang
+* Automatisch kleurgebruik:
+
+  * 🔴 Uit → tekst verborgen
+  * 🟢 Actief → fel groen
 
 ---
 
@@ -73,19 +72,19 @@ Een complete en flexibele **automatische beregeningsoplossing** voor Home Assist
 
 ## 📦 Installatie
 
-### 1. Clone of download dit project
+### 1. Download dit project
 
-Plaats de bestanden in je Home Assistant config map:
+Download of clone deze repository naar je **eigen computer** (NIET direct in Home Assistant):
 
 ```bash
-/config/
+git clone <repo-url>
 ```
 
 ---
 
 ### 2. Maak een configuratiebestand
 
-Maak een bestand:
+Maak een bestand in dezelfde map als het script:
 
 ```
 beregening_tuin_config.yaml
@@ -108,11 +107,10 @@ zones:
 ```
 
 ---
+
 ### ➕ Zones toevoegen
 
 Je kunt **zoveel zones toevoegen als je wilt**.
-
-Voorbeeld:
 
 ```yaml
 zones:
@@ -127,31 +125,35 @@ zones:
 
   - name: Bloemenborder
     relay: switch.border
+```
 
+➡️ De generator maakt automatisch:
+
+* alle helpers
+* alle sensoren
+* alle automations
+* dashboard kaarten per zone
+
+---
 
 ### 3. Run de generator
 
+Voer het script uit op je computer:
+
 ```bash
-python3 jouw_script.py
+python3 script.py
 ```
 
-Dit maakt:
+Dit genereert:
 
 * `beregening_tuin.yaml` → Home Assistant package
 * `beregening_tuin_dashboard.yaml` → Dashboard
 
 ---
 
-### 4. Voeg package toe aan Home Assistant
+### 4. Upload naar Home Assistant
 
-In `configuration.yaml`:
-
-```yaml
-homeassistant:
-  packages: !include_dir_named packages
-```
-
-Plaats daarna het gegenereerde bestand in:
+Kopieer het package bestand naar:
 
 ```
 /config/packages/
@@ -159,11 +161,26 @@ Plaats daarna het gegenereerde bestand in:
 
 ---
 
-### 5. Dashboard importeren
+### 5. Activeer packages
+
+Zorg dat dit in je `configuration.yaml` staat:
+
+```yaml
+homeassistant:
+  packages: !include_dir_named packages
+```
+
+---
+
+### 6. Herstart Home Assistant
+
+---
+
+### 7. Dashboard importeren
 
 * Ga naar je dashboard
-* Kies **Edit Dashboard**
-* Import YAML
+* Klik op **Bewerken**
+* Ga naar **YAML modus**
 * Plak de inhoud van:
 
 ```
@@ -177,18 +194,18 @@ beregening_tuin_dashboard.yaml
 ### Automatisch
 
 * Zet **Automatische modus** aan
-* Stel:
+* Stel in:
 
   * starttype
-  * temperatuur
-  * regenlimiet
+  * minimale temperatuur
+  * maximale regen
 * Kies per zone de dagen
 
 ---
 
 ### Handmatig
 
-* Start per zone via dashboard
+* Start zones via dashboard
 * Stel handmatige duur in
 
 ---
@@ -196,7 +213,7 @@ beregening_tuin_dashboard.yaml
 ### Timerbalken
 
 * Groene balk = actief
-* Balk loopt af naarmate tijd verstrijkt
+* Balk loopt af tijdens gebruik
 * Tekst toont resterende minuten
 
 ---
@@ -205,14 +222,14 @@ beregening_tuin_dashboard.yaml
 
 Het systeem berekent:
 
-1. Wanneer de volgende run moet starten
+1. Wanneer de volgende run start
 2. Welke zones actief zijn op die dag
 3. Totale looptijd
 4. Of beregening toegestaan is
 
 Daarna:
 
-* Start script automatisch
+* Start het systeem automatisch
 * Zones lopen sequentieel of parallel
 * Sensoren houden alles realtime bij
 
@@ -235,7 +252,7 @@ project/
 * Home Assistant
 * HACS (aanbevolen)
 
-### Custom kaarten:
+### Custom kaarten
 
 * `mushroom`
 * `bar-card`
@@ -246,8 +263,8 @@ project/
 
 ## 🚀 Toekomstige uitbreidingen
 
-* 🌧️ Integratie met meer weerservices
-* 📱 Meldingen bij starten/stoppen
+* 🌧️ Integratie met meerdere weerservices
+* 📱 Notificaties bij starten/stoppen
 * 📊 Waterverbruik tracking
 * 🤖 AI-gebaseerde planning
 
